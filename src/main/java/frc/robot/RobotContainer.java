@@ -32,7 +32,7 @@ public class RobotContainer {
     m_swerveDrive = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     m_driverController = new DriverController(DriverControllerConstants.kDriverControllerPort);
 
-    SwerveCommand swerveCommand = new SwerveCommand(m_swerveDrive, 
+    SwerveJoystickCommand swerveCommand = new SwerveJoystickCommand(m_swerveDrive, 
                                                     m_driverController::getLeftXCorrected, 
                                                     m_driverController::getLeftYCorrected, 
                                                     m_driverController::getRightXCorrected);

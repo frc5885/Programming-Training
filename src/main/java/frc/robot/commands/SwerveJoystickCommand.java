@@ -10,7 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class SwerveCommand extends Command {
+public class SwerveJoystickCommand extends Command {
 
   private final SwerveSubsystem m_swerveSubsystem;
   private final DoubleSupplier translationXFunction;
@@ -18,7 +18,7 @@ public class SwerveCommand extends Command {
   private final DoubleSupplier angularRotationXFunction;
 
   /** Creates a new SwerveCommand. */
-  public SwerveCommand(SwerveSubsystem swerve, DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
+  public SwerveJoystickCommand(SwerveSubsystem swerve, DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     m_swerveSubsystem = swerve;
     translationXFunction = translationX;
     translationYFunction = translationY;
