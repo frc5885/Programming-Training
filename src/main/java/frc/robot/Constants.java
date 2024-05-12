@@ -13,7 +13,32 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
+  public static class DriverControllerConstants {
     public static final int kDriverControllerPort = 0;
+    public static final double kDeadbandLeftX = 0.05;
+    public static final double kDeadbandLeftY = 0.05;
+    public static final double kDeadbandRightX = 0.05;
+    public static final double kDeadbandRightY = 0.05;
   }
+  
+  public static class SwerveConstants {
+    public static final double kMaxChassisSpeedMetersPerSecond = 4.2;
+    public static final double kMaxAngularSpeedRadiansPerSecond = 2 * Math.PI;
+
+    public static final double kMaxAccelerationMetersPerSecondSquared = 4.0;
+    public static final double kMaxAngularAccelerationRadPerSecondSquared = 2 * Math.PI;
+    
+  }
+
+  // for advantagekit
+  public static final Mode currentMode = Mode.REAL;
+  public static enum Mode {
+    /** Running on a real robot. */
+    REAL,
+    /** Running a physics simulator. */
+    SIM,
+    /** Replaying from a log file. */
+    REPLAY
+  }
+
 }
