@@ -36,17 +36,7 @@ public class SwerveJoystickCommand extends Command {
   @Override
   public void execute() {
     // ADD CODE HERE
-    double x = m_translationXFunction.getAsDouble(); //remove
-    double y = m_translationYFunction.getAsDouble(); //remove
-    double angle = m_angularRotationXFunction.getAsDouble(); //remove
-
-    double xVelocity = x * m_swerveSubsystem.getMaximumVelocity(); //remove
-    double yVelocity = y * m_swerveSubsystem.getMaximumVelocity(); //remove
-    double angularVelocity = angle * m_swerveSubsystem.getMaximumAngularVelocity(); //remove
-
-    Translation2d translationVelocity = new Translation2d(xVelocity, yVelocity); //remove
-
-    m_swerveSubsystem.drive(translationVelocity, angularVelocity); //remove
+    
   }
 
   // Called once the command ends or is interrupted.

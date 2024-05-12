@@ -52,8 +52,7 @@ public class SwerveSubsystem extends SubsystemBase
   public void drive(Translation2d translationVelocity, double angularVelocity)
   { 
     // ADD CODE HERE
-    m_swerveDrive.drive(translationVelocity, angularVelocity, m_fieldOriented, false); //remove
-    // Open loop is disabled since it shouldn't be used most of the time. //remove
+    
   }
 
   @Override
@@ -71,7 +70,6 @@ public class SwerveSubsystem extends SubsystemBase
     m_swerveDrive.resetOdometry(initialHolonomicPose);
   }
 
-  @AutoLogOutput(key = "Odometry/RobotPose")
   public Pose2d getPose()
   {
     return m_swerveDrive.getPose();
