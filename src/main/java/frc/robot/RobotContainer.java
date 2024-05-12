@@ -23,19 +23,22 @@ import edu.wpi.first.wpilibj2.command.Commands;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem m_swerveDrive;
-  private final DriverController m_driverController;
+  // ADD CODE HERE (define subsystem and controller)
+  private final SwerveSubsystem m_swerveDrive;  //remove
+  private final DriverController m_driverController;  //remove
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Initialize subsystems here
-    m_swerveDrive = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-    m_driverController = new DriverController(DriverControllerConstants.kDriverControllerPort);
+    // ADD CODE HERE (initialize subsystem and controller, create command)
+    m_swerveDrive = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));  //remove
+    m_driverController = new DriverController(DriverControllerConstants.kDriverControllerPort); //remove
 
-    SwerveJoystickCommand swerveCommand = new SwerveJoystickCommand(m_swerveDrive, 
-                                                    m_driverController::getLeftXCorrected, 
-                                                    m_driverController::getLeftYCorrected, 
-                                                    m_driverController::getRightXCorrected);
+    SwerveJoystickCommand swerveCommand = new SwerveJoystickCommand(m_swerveDrive,  //remove
+                                                    () -> m_driverController.getLeftXCorrected(),  //remove
+                                                    () -> m_driverController.getLeftYCorrected(),  //remove
+                                                    () -> m_driverController.getRightXCorrected()); //remove
+
     m_swerveDrive.setDefaultCommand(swerveCommand);
 
     // Configure the trigger bindings

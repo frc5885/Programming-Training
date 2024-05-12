@@ -26,8 +26,8 @@ public class SwerveSubsystem extends SubsystemBase
 {
 
   private final SwerveDrive m_swerveDrive;
-  public double maximumSpeed = Constants.SwerveConstants.kMaxChassisSpeedMetersPerSecond;
-  public double maxAngularVelocity = Constants.SwerveConstants.kMaxAngularSpeedRadiansPerSecond;
+  public final double m_maximumSpeed = Constants.SwerveConstants.kMaxChassisSpeedMetersPerSecond;
+  public final double m_maxAngularVelocity = Constants.SwerveConstants.kMaxAngularSpeedRadiansPerSecond;
 
   private boolean m_fieldOriented = true;
   
@@ -37,7 +37,7 @@ public class SwerveSubsystem extends SubsystemBase
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
     {
-      m_swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
+      m_swerveDrive = new SwerveParser(directory).createSwerveDrive(m_maximumSpeed);
     } catch (Exception e)
     {
       throw new RuntimeException(e);
@@ -45,18 +45,15 @@ public class SwerveSubsystem extends SubsystemBase
 
     m_swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
     m_swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
-    m_swerveDrive.swerveController.setMaximumAngularVelocity(maxAngularVelocity);
+    m_swerveDrive.swerveController.setMaximumAngularVelocity(m_maxAngularVelocity);
 
   }
 
-  public void drive(Translation2d translation, double rotation, boolean fieldRelative)
+  public void drive(Translation2d translationVelocity, double angularVelocity)
   { 
-    // for some reason it's not flipping controls for red vs blue so I added it manually
-    Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
-    double signum = (alliance == Alliance.Blue && fieldRelative) ? 1.0 : -1.0;
-    // x and y need to be flipped
-    m_swerveDrive.drive(new Translation2d(translation.getY() * signum, translation.getX() * signum), rotation, fieldRelative,
-                      false); // Open loop is disabled since it shouldn't be used most of the time.
+    // ADD CODE HERE
+    m_swerveDrive.drive(translationVelocity, angularVelocity, m_fieldOriented, false); //remove
+    // Open loop is disabled since it shouldn't be used most of the time. //remove
   }
 
   @Override

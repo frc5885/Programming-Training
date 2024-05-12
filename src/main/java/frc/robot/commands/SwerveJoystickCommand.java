@@ -13,16 +13,16 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class SwerveJoystickCommand extends Command {
 
   private final SwerveSubsystem m_swerveSubsystem;
-  private final DoubleSupplier translationXFunction;
-  private final DoubleSupplier translationYFunction;
-  private final DoubleSupplier angularRotationXFunction;
+  private final DoubleSupplier m_translationXFunction;
+  private final DoubleSupplier m_translationYFunction;
+  private final DoubleSupplier m_angularRotationXFunction;
 
-  /** Creates a new SwerveCommand. */
+  /** Creates a new SwerveJoystickCommand. */
   public SwerveJoystickCommand(SwerveSubsystem swerve, DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     m_swerveSubsystem = swerve;
-    translationXFunction = translationX;
-    translationYFunction = translationY;
-    angularRotationXFunction = angularRotationX;
+    m_translationXFunction = translationX;
+    m_translationYFunction = translationY;
+    m_angularRotationXFunction = angularRotationX;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_swerveSubsystem);
@@ -35,16 +35,18 @@ public class SwerveJoystickCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Make the robot move
-    double x = translationXFunction.getAsDouble();
-    double y = translationYFunction.getAsDouble();
-    double angle = angularRotationXFunction.getAsDouble();
+    // ADD CODE HERE
+    double x = m_translationXFunction.getAsDouble(); //remove
+    double y = m_translationYFunction.getAsDouble(); //remove
+    double angle = m_angularRotationXFunction.getAsDouble(); //remove
 
-    Translation2d translationVelocity = new Translation2d(Math.pow(x, 2) * m_swerveSubsystem.getMaximumVelocity() * -Math.signum(x),
-                                                          Math.pow(y, 2) * m_swerveSubsystem.getMaximumVelocity() * Math.signum(y));
-    double angularVelocity = Math.pow(angle, 2) * m_swerveSubsystem.getMaximumAngularVelocity() * -Math.signum(angle);
+    double xVelocity = x * m_swerveSubsystem.getMaximumVelocity(); //remove
+    double yVelocity = y * m_swerveSubsystem.getMaximumVelocity(); //remove
+    double angularVelocity = angle * m_swerveSubsystem.getMaximumAngularVelocity(); //remove
 
-    m_swerveSubsystem.drive(translationVelocity, angularVelocity, m_swerveSubsystem.getFieldOriented());
+    Translation2d translationVelocity = new Translation2d(xVelocity, yVelocity); //remove
+
+    m_swerveSubsystem.drive(translationVelocity, angularVelocity); //remove
   }
 
   // Called once the command ends or is interrupted.
