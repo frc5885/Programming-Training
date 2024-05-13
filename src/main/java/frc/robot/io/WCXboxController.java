@@ -1,54 +1,54 @@
 package frc.robot.io;
 
-import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.function.BooleanSupplier;
 
-public class WCDualsenseController extends CommandPS5Controller {
+public class WCXboxController extends CommandXboxController {
 
-  protected final JoystickButton crossButton =
-      new JoystickButton(getHID(), PS5Controller.Button.kCross.value);
-  protected final JoystickButton circleButton =
-      new JoystickButton(getHID(), PS5Controller.Button.kCircle.value);
-  protected final JoystickButton triangleButton =
-      new JoystickButton(getHID(), PS5Controller.Button.kTriangle.value);
-  protected final JoystickButton squareButton =
-      new JoystickButton(getHID(), PS5Controller.Button.kSquare.value);
+  protected final JoystickButton xButton =
+      new JoystickButton(getHID(), XboxController.Button.kX.value);
+  protected final JoystickButton yButton =
+      new JoystickButton(getHID(), XboxController.Button.kY.value);
+  protected final JoystickButton aButton =
+      new JoystickButton(getHID(), XboxController.Button.kA.value);
+  protected final JoystickButton bButton =
+      new JoystickButton(getHID(), XboxController.Button.kB.value);
   protected final JoystickButton leftBumper =
-      new JoystickButton(getHID(), PS5Controller.Button.kL1.value);
+      new JoystickButton(getHID(), XboxController.Button.kLeftBumper.value);
   protected final JoystickButton rightBumper =
-      new JoystickButton(getHID(), PS5Controller.Button.kR1.value);
+      new JoystickButton(getHID(), XboxController.Button.kRightBumper.value);
   protected final JoystickButton leftStick =
-      new JoystickButton(getHID(), PS5Controller.Button.kL3.value);
+      new JoystickButton(getHID(), XboxController.Button.kLeftStick.value);
   protected final JoystickButton rightStick =
-      new JoystickButton(getHID(), PS5Controller.Button.kR3.value);
+      new JoystickButton(getHID(), XboxController.Button.kRightStick.value);
   protected final JoystickButton backButton =
-      new JoystickButton(getHID(), PS5Controller.Button.kCreate.value);
+      new JoystickButton(getHID(), XboxController.Button.kBack.value);
   protected final JoystickButton startButton =
-      new JoystickButton(getHID(), PS5Controller.Button.kOptions.value);
+      new JoystickButton(getHID(), XboxController.Button.kStart.value);
 
-  public WCDualsenseController(int port) {
+  public WCXboxController(int port) {
     super(port);
   }
 
-  public JoystickButton getCrossButton() {
-    return crossButton;
+  public JoystickButton getXButton() {
+    return xButton;
   }
 
-  public JoystickButton getCircleButton() {
-    return circleButton;
+  public JoystickButton getYButton() {
+    return yButton;
   }
 
-  public JoystickButton getTriangleButton() {
-    return triangleButton;
+  public JoystickButton getAButton() {
+    return aButton;
   }
 
-  public JoystickButton getSquareButton() {
-    return squareButton;
+  public JoystickButton getBButton() {
+    return bButton;
   }
 
   public JoystickButton getLeftBumper() {
@@ -90,7 +90,7 @@ public class WCDualsenseController extends CommandPS5Controller {
   }
 
   public void scheduleOnRightTrigger(Command command, double minimumInput) {
-    scheduleOnInput(command, () -> getR2Axis() > minimumInput);
+    scheduleOnInput(command, () -> getRightTriggerAxis() > minimumInput);
   }
 
   public void scheduleOnLeftTriggerTrue(Command command) {
@@ -102,11 +102,11 @@ public class WCDualsenseController extends CommandPS5Controller {
   }
 
   public void scheduleOnLeftTriggerTrue(Command command, double minimumInput) {
-    scheduleOnInput(command, () -> getL2Axis() > minimumInput);
+    scheduleOnInput(command, () -> getLeftTriggerAxis() > minimumInput);
   }
 
   public void scheduleOnLeftTriggerFalse(Command command, double minimumInput) {
-    scheduleOnInput(command, () -> getL2Axis() <= minimumInput);
+    scheduleOnInput(command, () -> getLeftTriggerAxis() <= minimumInput);
   }
 
   private void scheduleOnInput(Command command, BooleanSupplier condition) {

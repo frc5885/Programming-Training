@@ -3,7 +3,7 @@ package frc.robot.io;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants;
 
-public class DriverController extends WCDualsenseController {
+public class DriverController extends WCXboxController {
 
     public DriverController(int port) {
         super(port);
