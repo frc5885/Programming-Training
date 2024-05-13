@@ -6,7 +6,10 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -36,17 +39,23 @@ public class SwerveJoystickCommand extends Command {
   @Override
   public void execute() {
     // ADD CODE HERE
-    double x = m_translationXFunction.getAsDouble(); //remove
-    double y = m_translationYFunction.getAsDouble(); //remove
-    double angle = m_angularRotationXFunction.getAsDouble(); //remove
+    double x = m_translationXFunction.getAsDouble(); 
+    double y = m_translationYFunction.getAsDouble(); 
+    double angle = m_angularRotationXFunction.getAsDouble(); 
 
-    double xVelocity = x * m_swerveSubsystem.getMaximumVelocity(); //remove
-    double yVelocity = y * m_swerveSubsystem.getMaximumVelocity(); //remove
-    double angularVelocity = angle * m_swerveSubsystem.getMaximumAngularVelocity(); //remove
+    double xVelocity = -y * m_swerveSubsystem.getMaximumVelocity(); 
+    double yVelocity = x * m_swerveSubsystem.getMaximumVelocity(); 
+    double angularVelocity = -angle * m_swerveSubsystem.getMaximumAngularVelocity(); 
 
-    Translation2d translationVelocity = new Translation2d(xVelocity, yVelocity); //remove
+    Translation2d translationVelocity = new Translation2d(xVelocity, yVelocity); 
 
-    m_swerveSubsystem.drive(translationVelocity, angularVelocity); //remove
+    // the controls need to be mirrored for both alliances for robot oriented, so we can just mirror them if we're on blue or in robot oriented
+    if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue || !m_swerveSubsystem.getFieldOriented()) {
+      // rotate the translation velocity by 180 degrees to mirror it for the blue side
+      translationVelocity = translationVelocity.rotateBy(Rotation2d.fromDegrees(180)); 
+    }
+
+    m_swerveSubsystem.drive(translationVelocity, angularVelocity); 
   }
 
   // Called once the command ends or is interrupted.
@@ -59,3 +68,4 @@ public class SwerveJoystickCommand extends Command {
     return false;
   }
 }
+

@@ -52,8 +52,8 @@ public class SwerveSubsystem extends SubsystemBase
   public void drive(Translation2d translationVelocity, double angularVelocity)
   { 
     // ADD CODE HERE
-    m_swerveDrive.drive(translationVelocity, angularVelocity, m_fieldOriented, false); //remove
-    // Open loop is disabled since it shouldn't be used most of the time. //remove
+    m_swerveDrive.drive(translationVelocity, angularVelocity, m_fieldOriented, false); 
+    // Open loop is disabled since it shouldn't be used most of the time. 
   }
 
   @Override

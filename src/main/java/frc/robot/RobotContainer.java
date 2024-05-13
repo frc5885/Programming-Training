@@ -14,6 +14,7 @@ import java.io.File;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,20 +25,20 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // ADD CODE HERE (define subsystem and controller)
-  private final SwerveSubsystem m_swerveDrive;  //remove
-  private final DriverController m_driverController;  //remove
+  private final SwerveSubsystem m_swerveDrive;  
+  private final DriverController m_driverController;  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Initialize subsystems here
     // ADD CODE HERE (initialize subsystem and controller, create command)
-    m_swerveDrive = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));  //remove
-    m_driverController = new DriverController(DriverControllerConstants.kDriverControllerPort); //remove
+    m_swerveDrive = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));  
+    m_driverController = new DriverController(DriverControllerConstants.kDriverControllerPort); 
 
-    SwerveJoystickCommand swerveCommand = new SwerveJoystickCommand(m_swerveDrive,  //remove
-                                                    () -> m_driverController.getLeftXCorrected(),  //remove
-                                                    () -> m_driverController.getLeftYCorrected(),  //remove
-                                                    () -> m_driverController.getRightXCorrected()); //remove
+    SwerveJoystickCommand swerveCommand = new SwerveJoystickCommand(m_swerveDrive,  
+                                                    () -> m_driverController.getLeftXCorrected(),  
+                                                    () -> m_driverController.getLeftYCorrected(),  
+                                                    () -> m_driverController.getRightXCorrected()); 
 
     m_swerveDrive.setDefaultCommand(swerveCommand);
 
@@ -49,6 +50,8 @@ public class RobotContainer {
    * Use this method to define your trigger->command mappings.
    */
   private void configureBindings() {
+
+    m_driverController.getCircleButton().onTrue(new InstantCommand(() -> m_swerveDrive.toggleFieldOriented()));
     
   }
 
