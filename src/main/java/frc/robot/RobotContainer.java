@@ -4,33 +4,44 @@
 
 package frc.robot;
 
-import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.io.*;
 import frc.robot.subsystems.*;
-
 import java.io.File;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  // ADD CODE HERE (define subsystem and controller)
+  DriverController m_driverController;
+  SwerveSubsystem m_swerveSubsystem;
+  PathPlanner m_pathPlanner;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
-    // Initialize subsystems here
-    // ADD CODE HERE (initialize subsystem and controller, create command)
+    m_driverController = new DriverController(0);
+    m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+    m_swerveSubsystem
+        .setDefaultCommand(new SwerveJoystickCommand(
+            m_swerveSubsystem,
+            () -> m_driverController.getRawAxis(1),
+            () -> m_driverController.getRawAxis(0),
+            () -> m_driverController.getRawAxis(2)));
+    m_pathPlanner = new PathPlanner(m_swerveSubsystem);
 
-    // Configure the trigger bindings
     configureBindings();
   }
 
@@ -38,7 +49,7 @@ public class RobotContainer {
    * Use this method to define your trigger->command mappings.
    */
   private void configureBindings() {
-    
+    m_driverController.button(1).whileTrue(m_pathPlanner.buildFollowPath(new Pose2d(5, 5, new Rotation2d())));
   }
 
   /**
@@ -47,7 +58,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // Actual auto command would go here, or a function to get the selected command from a chooser.
     return Commands.none();
   }
 }
