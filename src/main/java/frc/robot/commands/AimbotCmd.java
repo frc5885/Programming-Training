@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.Supplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,13 +20,20 @@ public class AimbotCmd extends Command {
   private final Pose2d blueSpeaker = new Pose2d(0.225, 5.55, new Rotation2d());
   private Pose2d m_speaker;
   private PIDController m_pidController;
+  private Supplier<Translation2d> m_translation2d;
 
-  public AimbotCmd(SwerveSubsystem swerveSubsystem) {
+  /**
+   * Flexible command for both autonomous and periodic periods.
+   * <p>
+   * Can run parallel with {@link SwerveJoystickCommand}
+   */
+  public AimbotCmd(SwerveSubsystem swerveSubsystem, Supplier<Translation2d> translation2d) {
     m_swerveSubsystem = swerveSubsystem;
     m_speaker = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? redSpeaker : blueSpeaker;
-    m_pidController = new PIDController(0.1, 0, 0);
+    m_pidController = new PIDController(0.5, 0, 0);
     m_pidController.enableContinuousInput(-Math.PI, Math.PI);
-    m_pidController.setTolerance(Math.PI / 18);
+    m_pidController.setTolerance(Math.PI / 60);
+    m_translation2d = translation2d;
 
     addRequirements(m_swerveSubsystem);
   }
@@ -44,7 +52,7 @@ public class AimbotCmd extends Command {
     double theta = Math.atan2(y, x);
     double angularVelocity = m_pidController.calculate(currentPose.getRotation().getRadians(), theta)
         * m_swerveSubsystem.getMaximumAngularVelocity();
-    m_swerveSubsystem.drive(new Translation2d(), angularVelocity);
+    m_swerveSubsystem.drive(m_translation2d.get().times(m_swerveSubsystem.getMaximumVelocity()), angularVelocity);
   }
 
   // Called once the command ends or is interrupted.
@@ -55,6 +63,6 @@ public class AimbotCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_pidController.atSetpoint();
+    return false;
   }
 }

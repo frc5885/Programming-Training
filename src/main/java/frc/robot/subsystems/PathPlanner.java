@@ -13,6 +13,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * Utility class/subsystem for any {@code on-the-fly} path generations during
+ * periodic.
+ * <p>
+ * See {@link #buildFollowPath(Pose2d)} for more details.
+ */
 public class PathPlanner extends SubsystemBase {
   SwerveSubsystem m_swerveSubsystem;
 

@@ -1,6 +1,7 @@
 package frc.robot.io;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.Constants;
 
 public class DriverController extends WCXboxController {
@@ -23,6 +24,10 @@ public class DriverController extends WCXboxController {
 
     public double getRightYCorrected() {
         return MathUtil.applyDeadband(super.getRightY(), Constants.DriverControllerConstants.kDeadbandRightY);
+    }
+
+    public Translation2d getLeftTranslation2d() {
+        return new Translation2d(getLeftXCorrected(), getLeftYCorrected());
     }
 
 }

@@ -8,12 +8,9 @@ import frc.robot.commands.*;
 import frc.robot.io.*;
 import frc.robot.subsystems.*;
 import java.io.File;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -29,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class RobotContainer {
   DriverController m_driverController;
   SwerveSubsystem m_swerveSubsystem;
+  /** Deals with {@code on-the-fly} path generations. */
   PathPlanner m_pathPlanner;
 
   /**
@@ -41,9 +39,9 @@ public class RobotContainer {
         .setDefaultCommand(
             Robot.isReal() ? new SwerveJoystickCommand(
                 m_swerveSubsystem,
-                () -> -m_driverController.getLeftY(),
-                () -> -m_driverController.getLeftX(),
-                () -> -m_driverController.getRightX())
+                () -> -m_driverController.getLeftYCorrected(),
+                () -> -m_driverController.getLeftXCorrected(),
+                () -> -m_driverController.getRightXCorrected())
                 : new SwerveJoystickCommand(
                     m_swerveSubsystem,
                     () -> m_driverController.getRawAxis(1),
@@ -58,8 +56,15 @@ public class RobotContainer {
    * Use this method to define your trigger->command mappings.
    */
   private void configureBindings() {
-    m_driverController.button(1).whileTrue(new AimbotCmd(m_swerveSubsystem));
-    m_driverController.button(2).whileTrue(m_pathPlanner.buildFollowPath(new Pose2d(5, 5, new Rotation2d())));
+    if (Robot.isReal()) {
+      m_driverController.getAButton()
+          .whileTrue(new AimbotCmd(m_swerveSubsystem, m_driverController::getLeftTranslation2d));
+      m_driverController.getBButton().whileTrue(m_pathPlanner.buildFollowPath(m_swerveSubsystem.getPose()));
+    } else {
+      m_driverController.button(1)
+          .whileTrue(new AimbotCmd(m_swerveSubsystem, m_driverController::getLeftTranslation2d));
+      m_driverController.button(2).whileTrue(m_pathPlanner.buildFollowPath(new Pose2d(5, 5, new Rotation2d())));
+    }
   }
 
   /**
