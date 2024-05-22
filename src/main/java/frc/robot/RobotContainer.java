@@ -8,9 +8,12 @@ import frc.robot.commands.*;
 import frc.robot.io.*;
 import frc.robot.subsystems.*;
 import java.io.File;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -35,11 +38,17 @@ public class RobotContainer {
     m_driverController = new DriverController(0);
     m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     m_swerveSubsystem
-        .setDefaultCommand(new SwerveJoystickCommand(
-            m_swerveSubsystem,
-            () -> m_driverController.getRawAxis(1),
-            () -> m_driverController.getRawAxis(0),
-            () -> m_driverController.getRawAxis(2)));
+        .setDefaultCommand(
+            Robot.isReal() ? new SwerveJoystickCommand(
+                m_swerveSubsystem,
+                () -> -m_driverController.getLeftY(),
+                () -> -m_driverController.getLeftX(),
+                () -> -m_driverController.getRightX())
+                : new SwerveJoystickCommand(
+                    m_swerveSubsystem,
+                    () -> m_driverController.getRawAxis(1),
+                    () -> m_driverController.getRawAxis(0),
+                    () -> m_driverController.getRawAxis(2)));
     m_pathPlanner = new PathPlanner(m_swerveSubsystem);
 
     configureBindings();
@@ -49,7 +58,8 @@ public class RobotContainer {
    * Use this method to define your trigger->command mappings.
    */
   private void configureBindings() {
-    m_driverController.button(1).whileTrue(m_pathPlanner.buildFollowPath(new Pose2d(5, 5, new Rotation2d())));
+    m_driverController.button(1).whileTrue(new AimbotCmd(m_swerveSubsystem));
+    m_driverController.button(2).whileTrue(m_pathPlanner.buildFollowPath(new Pose2d(5, 5, new Rotation2d())));
   }
 
   /**
