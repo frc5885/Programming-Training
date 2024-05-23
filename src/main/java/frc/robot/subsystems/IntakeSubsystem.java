@@ -42,15 +42,12 @@ public class IntakeSubsystem extends WCSubsystem {
   @Override
   public void periodic() {
     super.periodic();
-    switch (subsystemAction) {
-      case INTAKE:
-        forwardMotors();
-        break;
-      case OUTTAKE:
-        reverseMotors();
-        break;
-      default:
-        stopMotors();
+    if (subsystemAction == SubsystemAction.INTAKE) {
+      forwardMotors();
+    } else if (subsystemAction == SubsystemAction.OUTTAKE) {
+      reverseMotors();
+    } else {
+      stopMotors();
     }
   }
 }
