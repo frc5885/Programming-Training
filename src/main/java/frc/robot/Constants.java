@@ -32,7 +32,13 @@ public final class Constants {
     public static final double kMaxAngularAccelerationRadPerSecondSquared = 2 * Math.PI;
   }
 
+  public static class IntakeConstants {
+    public static final int kIntakeLeft = 31;
+    public static final int kIntakeRight = 30;
+  }
+
   // for advantagekit
+  public static Boolean isLogging = false;
   public static final Mode currentMode = Mode.REAL;
 
   public static enum Mode {

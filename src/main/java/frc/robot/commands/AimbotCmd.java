@@ -24,8 +24,10 @@ public class AimbotCmd extends Command {
 
   /**
    * Flexible command for both autonomous and periodic periods.
-   * <p>
-   * Can run parallel with {@link SwerveJoystickCommand}
+   * {@code Allows aimbot while driving}.
+   * 
+   * @param swerveSubsystem The swerveSubsystem
+   * @param translation2d   The x and y values of the left stick on the joystick
    */
   public AimbotCmd(SwerveSubsystem swerveSubsystem, Supplier<Translation2d> translation2d) {
     m_swerveSubsystem = swerveSubsystem;

@@ -26,8 +26,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class RobotContainer {
   DriverController m_driverController;
   SwerveSubsystem m_swerveSubsystem;
-  /** Deals with {@code on-the-fly} path generations. */
   PathPlanner m_pathPlanner;
+  IntakeSubsystem m_intakeSubsystem;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -48,6 +48,7 @@ public class RobotContainer {
                     () -> m_driverController.getRawAxis(0),
                     () -> m_driverController.getRawAxis(2)));
     m_pathPlanner = new PathPlanner(m_swerveSubsystem);
+    m_intakeSubsystem = new IntakeSubsystem();
 
     configureBindings();
   }

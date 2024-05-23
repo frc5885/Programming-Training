@@ -42,6 +42,12 @@ public class PathPlanner extends SubsystemBase {
         m_swerveSubsystem);
   }
 
+  /**
+   * Generates a path {@code on-the-fly}.
+   * 
+   * @param pose2d The pose to reach
+   * @return The path following command
+   */
   public Command buildFollowPath(Pose2d pose2d) {
     return AutoBuilder.pathfindToPose(pose2d,
         new PathConstraints(m_swerveSubsystem.getMaximumVelocity(), m_swerveSubsystem.getMaximumVelocity(),
