@@ -7,9 +7,12 @@ package frc.robot;
 import frc.robot.commands.*;
 import frc.robot.io.*;
 import frc.robot.subsystems.*;
+import swervelib.math.SwerveMath;
+
 import java.io.File;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -29,6 +32,7 @@ public class RobotContainer {
   PathPlanner m_pathPlanner;
   IntakeSubsystem m_intakeSubsystem;
 
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -40,7 +44,7 @@ public class RobotContainer {
             Robot.isReal() ? new SwerveJoystickCommand(
                 m_swerveSubsystem,
                 () -> -m_driverController.getLeftYCorrected(),
-                () -> -m_driverController.getLeftXCorrected(),
+                () -> m_driverController.getLeftXCorrected(),
                 () -> -m_driverController.getRightXCorrected())
                 : new SwerveJoystickCommand(
                     m_swerveSubsystem,
@@ -58,8 +62,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     if (Robot.isReal()) {
-      m_driverController.getAButton()
-          .whileTrue(new AimbotCmd(m_swerveSubsystem, m_driverController::getLeftTranslation2d));
+      m_driverController.scheduleOnLeftTriggerTrue(new AimbotCmd(m_swerveSubsystem, m_driverController::getLeftTranslation2d));
       m_driverController.getBButton().whileTrue(m_pathPlanner.buildFollowPath(m_swerveSubsystem.getPose()));
     } else {
       m_driverController.button(1)
