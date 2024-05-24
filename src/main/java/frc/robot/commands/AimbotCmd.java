@@ -5,9 +5,9 @@
 package frc.robot.commands;
 
 import java.util.function.Supplier;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -15,9 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AimbotCmd extends Command {
-  SwerveSubsystem m_swerveSubsystem;
-  private final Pose2d redSpeaker = new Pose2d(16.317, 5.55, new Rotation2d());
-  private final Pose2d blueSpeaker = new Pose2d(0.225, 5.55, new Rotation2d());
+  private SwerveSubsystem m_swerveSubsystem;
   private Pose2d m_speaker;
   private PIDController m_pidController;
   private Supplier<Translation2d> m_translation2d;
@@ -31,10 +29,12 @@ public class AimbotCmd extends Command {
    */
   public AimbotCmd(SwerveSubsystem swerveSubsystem, Supplier<Translation2d> translation2d) {
     m_swerveSubsystem = swerveSubsystem;
-    m_speaker = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? redSpeaker : blueSpeaker;
-    m_pidController = new PIDController(0.5, 0, 0);
+    m_speaker = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red
+        ? AprilTagFields.k2024Crescendo.loadAprilTagLayoutField().getTagPose(4).get().toPose2d()
+        : AprilTagFields.k2024Crescendo.loadAprilTagLayoutField().getTagPose(7).get().toPose2d();
+    m_pidController = new PIDController(1.4, 0.0, 0.105);
     m_pidController.enableContinuousInput(-Math.PI, Math.PI);
-    m_pidController.setTolerance(Math.PI / 60);
+    m_pidController.setTolerance(Math.PI / 90);
     m_translation2d = translation2d;
 
     addRequirements(m_swerveSubsystem);
@@ -65,6 +65,6 @@ public class AimbotCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_pidController.atSetpoint();
   }
 }

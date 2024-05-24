@@ -9,6 +9,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.Base.SubsystemAction;
+import frc.robot.subsystems.Base.WCSubsystem;
 
 public class IntakeSubsystem extends WCSubsystem {
   CANSparkMax m_intakeMotorRight;
@@ -23,16 +25,24 @@ public class IntakeSubsystem extends WCSubsystem {
   }
 
   @Override
+  protected void initActionsMapping() {
+    m_actionsMap.put(SubsystemAction.INTAKE, this::intake);
+    m_actionsMap.put(SubsystemAction.OUTTAKE, this::outtake);
+  }
+
+  @Override
   protected double getBaseSpeed() {
     return 1.0;
   }
 
-  public void intake() {
-    subsystemAction = SubsystemAction.INTAKE;
+  public Void intake() {
+    m_subsystemAction = SubsystemAction.INTAKE;
+    return null;
   }
 
-  public void outtake() {
-    subsystemAction = SubsystemAction.OUTTAKE;
+  public Void outtake() {
+    m_subsystemAction = SubsystemAction.OUTTAKE;
+    return null;
   }
 
   @Override
@@ -42,9 +52,9 @@ public class IntakeSubsystem extends WCSubsystem {
   @Override
   public void periodic() {
     super.periodic();
-    if (subsystemAction == SubsystemAction.INTAKE) {
+    if (m_subsystemAction == SubsystemAction.INTAKE) {
       forwardMotors();
-    } else if (subsystemAction == SubsystemAction.OUTTAKE) {
+    } else if (m_subsystemAction == SubsystemAction.OUTTAKE) {
       reverseMotors();
     } else {
       stopMotors();
