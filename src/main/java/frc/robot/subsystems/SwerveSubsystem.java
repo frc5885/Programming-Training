@@ -38,8 +38,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     try {
       m_swerveDrive = new SwerveParser(directory)
-          .createSwerveDrive(Constants.SwerveConstants.kMaxChassisSpeedMetersPerSecond, angleConversionFactor,
-              driveConversionFactor);
+          .createSwerveDrive(Constants.SwerveConstants.kMaxChassisSpeedMetersPerSecond, angleConversionFactor, driveConversionFactor);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

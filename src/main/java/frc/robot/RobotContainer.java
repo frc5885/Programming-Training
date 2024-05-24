@@ -33,6 +33,7 @@ public class RobotContainer {
   PathPlanner m_pathPlanner;
   IntakeSubsystem m_intakeSubsystem;
 
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -63,8 +64,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     if (Robot.isReal()) {
-      m_driverController
-          .scheduleOnLeftTriggerTrue(new AimbotCmd(m_swerveSubsystem, m_driverController::getLeftTranslation2d));
+      m_driverController.scheduleOnLeftTriggerTrue(new AimbotCmd(m_swerveSubsystem, m_driverController::getLeftTranslation2d));
       m_driverController.getBButton().whileTrue(m_pathPlanner.buildFollowPath(m_swerveSubsystem.getPose()));
     } else {
       m_driverController.button(1)
